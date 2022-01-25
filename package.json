@@ -1,0 +1,8 @@
+{
+  "name": "servico-email-telefone",
+  "version": "1.0.0",
+  "description": "Microserviço de confirmação de email e telefone",
+  "main": "index.js",
+  "author": "Dreykson Oliveira Bessa <dreyksonbessa16@hotmail.com>",
+  "license": "MIT"
+}
