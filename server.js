@@ -4,6 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const email = require("./src/routes/emailRoute");
+const verifica = require("./src/routes/verificaToken");
 
 
 app.use((req, res, next) => {
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
 app.use("/envio", email);
+app.use("/verifica", verifica);
 
 app.use((req, res, next) => {
     const erro = new Error('Não encontrado');
