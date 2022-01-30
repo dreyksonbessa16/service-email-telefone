@@ -29,9 +29,13 @@ module.exports = {
                    <h4><p><a href="${process.env.API}/${token}">Clique aqui para confirmar seu email</a></p></h4>`,
       };
 
-      const result = await transport.sendMail(mailConfigs);
+      await transport.sendMail(mailConfigs)
+        .then(res => {
+          return res;
+        }, (error) => {
+          return error;
+        })
 
-      return result;
     } catch (error) {
 
       console.log(error);

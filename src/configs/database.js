@@ -1,17 +1,20 @@
-require('dotenv').config()
-const { Pool } = require('pg');
-
-var pool = new Pool({
-    user: process.env.USER_DATABASE,
-    password: process.env.PASSWORD_DATABASE,
+require('dotenv').config();
+module.exports = {
+    dialect: process.env.DIALECT_DATABASE,
     host: process.env.HOST_DATABASE,
-    port: process.env.PORT_DATABASE,
+    username: process.env.USER_DATABASE,
+    password: process.env.PASSWORD_DATABASE,
     database: process.env.NAME_DATABASE,
-    ssl: {
-        require: true,
-        rejectUnauthorized: false
-    }
+    define: {
+        timestamps: true,
+        underscored: true
+    },
+    logging: false,
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    },
 
-});
-
-exports.pool = pool;
+};

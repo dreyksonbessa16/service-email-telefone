@@ -1,21 +1,17 @@
 const req = require("express/lib/request");
 const jwt = require("jsonwebtoken");
+const Util = require("./Util");
 
 module.exports = {
 
-    generate(email) {
-
-        const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let codigo = '';
-
-        for (let i = 0; i < 5; i++) {
-            codigo += characters[Math.floor(Math.random() * characters.length)];
-        }
+    generate(email, telefone, codigo_email, codigo_telefone) {
 
         const token = jwt.sign(
             {
-                email: email,
-                codigo: codigo
+                email,
+                telefone,
+                codigo_email,
+                codigo_telefone
             },
             process.env.JWT_KEY,
             {
@@ -25,9 +21,10 @@ module.exports = {
 
         return token;
     },
+
     decode(token) {
         
         const decode = jwt.verify(token, process.env.JWT_KEY);
-        req.usuario = decode;
+        return decode;
     }
 }

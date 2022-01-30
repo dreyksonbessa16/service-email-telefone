@@ -3,8 +3,10 @@ const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
 
-const email = require("./src/routes/emailRoute");
-const verifica = require("./src/routes/verificaToken");
+require("./src/database");
+
+const envio = require("./src/routes/EnvioRoute");
+const verifica = require("./src/routes/verificarRoute");
 
 
 app.use((req, res, next) => {
@@ -25,7 +27,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
-app.use("/envio", email);
+app.use("/envio", envio);
 app.use("/verifica", verifica);
 
 app.use((req, res, next) => {
