@@ -4,7 +4,6 @@ module.exports = {
     async verificaEmail(req, res) {
         const { token } = req.params;
         const tokenDecode = TokenService.decode(token);
-        console.log(tokenDecode);
         if (tokenDecode === 0) {
             return res.json({ message: "Erro no token!" });
         }
