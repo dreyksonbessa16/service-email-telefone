@@ -9,6 +9,7 @@ const envio = require("./src/routes/EnvioRoute");
 const verifica = require("./src/routes/verificarRoute");
 
 
+app.use(cors());
 app.use((req, res, next) => {
     req.header('Access-Control-Allow-Origin', '*');
     req.header(
@@ -22,7 +23,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
