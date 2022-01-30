@@ -4,6 +4,10 @@ module.exports = {
     async verificaEmail(req, res) {
         const { token } = req.params;
         const tokenDecode = TokenService.decode(token);
+        console.log(tokenDecode);
+        if (tokenDecode === 0) {
+            return res.json({ message: "Erro no token!" });
+        }
 
         const usuario = await User.findAll({
             where: {
@@ -26,8 +30,8 @@ module.exports = {
             }
         }
         return res.json({
-            message: "Email Verificado com Sucesso!", 
-            email: tokenDecode.email, 
+            message: "Email Verificado com Sucesso!",
+            email: tokenDecode.email,
             telefone: tokenDecode.telefone
         });
     },
@@ -72,7 +76,7 @@ module.exports = {
         });
 
         if (usuario[0]) {
-            return res.json({ message: "TRUE"});
+            return res.json({ message: "TRUE" });
         }
         return res.json({
             message: "Verifique seu email e telefone novamente!"

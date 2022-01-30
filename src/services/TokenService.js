@@ -23,8 +23,12 @@ module.exports = {
     },
 
     decode(token) {
-        
-        const decode = jwt.verify(token, process.env.JWT_KEY);
-        return decode;
+
+        try {
+            const decode = jwt.verify(token, process.env.JWT_KEY);
+            return decode;
+        } catch (error) {
+            return 0;
+        }
     }
 }

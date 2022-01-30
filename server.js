@@ -10,7 +10,7 @@ const verifica = require("./src/routes/verificarRoute");
 
 
 app.use((req, res, next) => {
-    req.header('Access-Control-Allow-Origin: *');
+    req.header('Access-Control-Allow-Origin', '*');
     req.header(
         'Access-Control-Allow-Header',
         'Origin, X-Requerested-Width, Content-Type, Accept, Authorization'
