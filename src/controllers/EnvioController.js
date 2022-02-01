@@ -11,6 +11,18 @@ module.exports = {
         const codigo_telefone = Util.geraCodigoHash(5);
         const { email, telefone } = req.body;
 
+        const usuario = await User.findAll({
+            where: {
+                email: email,
+                status_telefone: 'A',
+                status_email: 'A'
+            }
+        });
+
+        if (usuario[0]) {
+            return res.json({ message: "TRUE" });
+        }
+
         const [user, created] = await User.findOrCreate({
             where: { email: email },
             defaults: {
