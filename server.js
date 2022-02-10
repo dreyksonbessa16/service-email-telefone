@@ -7,6 +7,7 @@ require("./src/database");
 
 const envio = require("./src/routes/EnvioRoute");
 const verifica = require("./src/routes/verificarRoute");
+const excluir = require("./src/routes/ExcluirRoute");
 
 
 app.use(cors());
@@ -29,6 +30,7 @@ app.use(express.json());
 
 app.use("/envio", envio);
 app.use("/verifica", verifica);
+app.use("/excluir", excluir);
 
 app.use((req, res, next) => {
     const erro = new Error('Não encontrado');
