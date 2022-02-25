@@ -46,9 +46,17 @@ module.exports = {
 
         const token = serviceToken.generate(user.email, user.telefone, codigo_email, codigo_telefone);
 
-        serviceEmail.send(token, user.email);
-        serviceTelefone.send(codigo_telefone, '+55' + telefone);
+        await serviceEmail.send(token, user.email).then((res) => {
+            if (!res) {
+                return res.json({ message: "ERRO AO ENVIAR EMAIL" });
+            }
+        });
+        await serviceTelefone.send(codigo_telefone, '+55' + telefone).then((res) => {
+            if (!res) {
+                return res.json({ message: "ERRO AO ENVIAR SMS"})
+            }
+        })
 
-        return res.json({ message: 'TRUE' });
+        return res.json({ message: "ENVIADO" });
     }
 };
