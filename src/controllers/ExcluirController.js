@@ -1,7 +1,7 @@
 const User = require("../models/User");
 
 module.exports = {
-    async deletarUsuario(req, res){
+    async deletarUsuario(req, res) {
 
         const findUser = await User.findAll({
             where: {
@@ -17,15 +17,15 @@ module.exports = {
             });
 
             if (user) {
-                
-                return res.json({ message: "Usuário excluido com Sucesso!"})
+
+                return res.status(200).send({ message: "USUÁRIO EXCLUÍDO COM SUCESSO!", error: false });
             } else {
-                
-                return res.json({ message: "Erro ao excluir usuário!"})
+
+                return res.status(500).send({ message: "ERRO AO EXCLUIR USUÁRIO!", error: true })
             }
         } else {
 
-            return res.json({ message: "Usuário não existe!"})
+            return res.status(404).send({ message: "USUÁRIO NÃO EXISTE!", error: true })
         }
 
 

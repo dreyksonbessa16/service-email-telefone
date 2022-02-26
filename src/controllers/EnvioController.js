@@ -20,7 +20,8 @@ module.exports = {
         });
 
         if (usuario[0]) {
-            return res.json({ message: "TRUE" });
+
+            return res.status(409).send({ message: "ESTE USUÁRIO JÁ FOI CONFIRMADO!", error: true });
         }
 
         const [user, created] = await User.findOrCreate({
@@ -47,16 +48,20 @@ module.exports = {
         const token = serviceToken.generate(user.email, user.telefone, codigo_email, codigo_telefone);
 
         await serviceEmail.send(token, user.email).then((res) => {
+
             if (!res) {
-                return res.json({ message: "ERRO AO ENVIAR EMAIL" });
+
+                return res.status(500).send({ message: "ERRO AO ENVIAR EMAIL", error: true });
             }
         });
         await serviceTelefone.send(codigo_telefone, '+55' + telefone).then((res) => {
+
             if (!res) {
-                return res.json({ message: "ERRO AO ENVIAR SMS"})
+
+                return res.status(500).send({ message: "ERRO AO ENVIAR SMS", error: true });
             }
         })
 
-        return res.json({ message: "ENVIADO" });
+        return res.status(200).send({ message: "EMAIL E TELEFONE ENVIADO COM SUCESSO", error: false });
     }
 };
