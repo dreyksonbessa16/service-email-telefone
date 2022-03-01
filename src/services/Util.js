@@ -1,7 +1,7 @@
 module.exports = {
     geraCodigoHash(quantidadeCaracteres){
 
-        const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const characters = '0123456789';
         let codigo = '';
 
         try {
@@ -11,7 +11,7 @@ module.exports = {
             return codigo;
         } catch (error) {
             
-            return "123ab"
+            return "15935"
         }
     }
 }
