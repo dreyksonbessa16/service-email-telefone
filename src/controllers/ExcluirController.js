@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const logger = require("../../logger");
 
 module.exports = {
     async deletarUsuario(req, res) {
@@ -21,6 +22,7 @@ module.exports = {
                 return res.status(200).send({ message: "USUÁRIO EXCLUÍDO COM SUCESSO!", error: false });
             } else {
 
+                logger.error(`ExcluirController: ERRO AO EXCLUIR USUÁRIO - { email: ${req.params.email} }`);
                 return res.status(500).send({ message: "ERRO AO EXCLUIR USUÁRIO!", error: true })
             }
         } else {

@@ -1,5 +1,7 @@
 const TokenService = require('../services/TokenService');
 const User = require('../models/User');
+const logger = require("../../logger");
+
 module.exports = {
     async verificaEmail(req, res) {
 
@@ -32,6 +34,7 @@ module.exports = {
 
                     if (!result) {
 
+                        logger.error(`VerificaController: ERRO AO VERIFICAR EMAIL - { email: ${tokenDecode.email}}`);
                         return res.status(500).send({
                             message: "ERRO AO VERIFICAR EMAIL!",
                             error: true
@@ -47,8 +50,9 @@ module.exports = {
                     }
                 } else {
 
+                    logger.error(`VerificaController: CÓDIGO NÃO CORRESPONDE AO CADASTRADO - { email: ${tokenDecode.email}, codigo_email: ${tokenDecode.codigo_email}}`);
                     return res.status(404).send({
-                        message: "CÓDIGO DO TOKEN NÃO CORRESPONDE AO CADASTRADO!",
+                        message: "CÓDIGO NÃO CORRESPONDE AO CADASTRADO!",
                         error: true
                     });
                 }
@@ -93,6 +97,7 @@ module.exports = {
 
                     if (!result) {
 
+                        logger.error(`VerificaController: ERRO AO VERIFICAR TELEFONE - { email: ${email}}`);
                         return res.status(500).send({
                             message: "ERRO AO VERIFICAR TELEFONE!",
                             error: true
@@ -106,6 +111,7 @@ module.exports = {
                     }
                 } else {
 
+                    logger.error(`VerificaController: CÓDIGO NÃO CORRESPONDE AO CADASTRADO - { email: ${email}, codigo_email: ${codigo}}`);
                     return res.status(404).send({
                         message: "CÓDIGO NÃO CORRESPONDE AO CADASTRADO!",
                         error: true

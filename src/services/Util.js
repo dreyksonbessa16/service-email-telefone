@@ -1,3 +1,4 @@
+const logger = require("../../logger");
 module.exports = {
     geraCodigoHash(quantidadeCaracteres){
 
@@ -11,6 +12,7 @@ module.exports = {
             return codigo;
         } catch (error) {
             
+            logger.error(`UTIL: ERRO AO GERAR CODIGO HASH - ${error}`);
             return "15935"
         }
     }
