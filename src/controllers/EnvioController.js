@@ -3,26 +3,14 @@ const Util = require("../services/Util");
 const serviceEmail = require("../services/EmailService");
 const serviceTelefone = require("../services/PhoneService");
 const serviceToken = require("../services/TokenService");
+const logger = require("../../logger");
 
 module.exports = {
-    async cadastro(req, res) {
+
+    async envioEmail(req, res) {
 
         const codigo_email = Util.geraCodigoHash(10);
-        const codigo_telefone = Util.geraCodigoHash(5);
         const { email, telefone } = req.body;
-
-        const usuario = await User.findAll({
-            where: {
-                email: email,
-                status_telefone: 'A',
-                status_email: 'A'
-            }
-        });
-
-        if (usuario[0]) {
-
-            return res.status(409).send({ message: "ESTE USUÁRIO JÁ FOI CONFIRMADO!", error: true });
-        }
 
         const [user, created] = await User.findOrCreate({
             where: { email: email },
@@ -31,37 +19,84 @@ module.exports = {
                 codigo_email,
                 status_email: 'P',
                 telefone,
-                codigo_telefone,
-                status_telefone: 'P'
+                codigo_telefone: '',
+                status_telefone: ''
 
             }
         });
+
+        logger.info(`EnvioController: USUÁRIO CRIADO OU LOCALIZADO - { email: ${email}, telefone: ${telefone} }`);
+
 
         if (!created) {
-            await User.update({
-                codigo_email, codigo_telefone
+
+            const userUpdate = await User.update({
+                codigo_email,
+                status_email: 'P',
+                codigo_telefone: '',
+                status_telefone: ''
             }, {
-                where: { email: user.email }
+                where: { email }
             });
+
+
+            if (!userUpdate[0]) {
+
+                logger.error(`EnvioController: ERRO AO ATUALIZAR USUÁRIO - { email: ${email}, telefone: ${telefone} }`);
+                return res.status(500)({ message: "ERRO AO ATUALIZAR USUÁRIO!" });
+            }
         }
 
-        const token = serviceToken.generate(user.email, user.telefone, codigo_email, codigo_telefone);
+        await serviceEmail.send(codigo_email, email).then((data) => {
 
-        await serviceEmail.send(token, user.email).then((res) => {
+            if (!data) {
 
-            if (!res) {
-
-                return res.status(500).send({ message: "ERRO AO ENVIAR EMAIL", error: true });
+                return res.status(500).send({ message: "ERRO AO ENVIAR EMAIL!" });
             }
         });
-        await serviceTelefone.send(codigo_telefone, '+55' + telefone).then((res) => {
 
-            if (!res) {
+        return res.status(200).send({ message: "EMAIL ENVIADO COM SUCESSO!" });
+    },
+
+    async envioTelefone(req, res) {
+
+        const { email } = req.body;
+        const codigo_telefone = Util.geraCodigoHash(5);
+
+        const user = await User.findAll({
+            where: {
+                email
+            }
+        });
+
+        logger.info(`EnvioController: USUÁRIO CRIADO OU LOCALIZADO - { email: ${email} }`);
+
+        if (user[0].status_email === "P") {
+
+            return res.status(400).send({ message: "SEU EMAIL AINDA NÃO FOI VERIFICADO!" });
+        }
+
+        await serviceTelefone.send(codigo_telefone, '+55' + user[0].telefone).then((data) => {
+
+            if (!data) {
 
                 return res.status(500).send({ message: "ERRO AO ENVIAR SMS", error: true });
             }
-        })
+        });
 
-        return res.status(200).send({ message: "EMAIL E TELEFONE ENVIADO COM SUCESSO", error: false });
+        const userUpdate = await User.update({
+            codigo_telefone,
+            status_telefone: 'P'
+        }, {
+            where: { email }
+        });
+
+        if (!userUpdate[0]) {
+
+            logger.error(`EnvioController: ERRO AO ATUALIZAR USUÁRIO - { email: ${email} }`);
+            return res.status(500)({ message: "ERRO AO ATUALIZAR USUÁRIO!" });
+        }
+
+        return res.status(200).send({ message: "SMS ENVIADO COM SUCESSO" });
     }
 };

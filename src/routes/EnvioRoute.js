@@ -3,6 +3,7 @@ const router = express.Router();
 const EnvioController = require("../controllers/EnvioController");
 const validator = require("../middleware/Validator");
 
-router.post("/", validator.validatorFieldsInput, EnvioController.cadastro);
+router.post("/email", validator.validatorFieldsInput, EnvioController.envioEmail);
+router.post("/telefone", validator.validatorFieldsInput, EnvioController.envioTelefone);
 
 module.exports = router;
