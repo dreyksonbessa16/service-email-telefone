@@ -1,6 +1,32 @@
 const validatorEmail = require("email-validator");
 const TokenService = require("../services/TokenService");
 
+exports.validatorFieldsSendEmail = (req, res, next) => {
+
+    let errorMessage = "";
+    let error = false;
+    const { email } = req.body;
+
+    if (email === "") {
+
+        errorMessage = "EMAIL NÃO PODE SER VAZIO!"
+        error = true;
+    }
+
+    if (!validatorEmail.validate(email)) {
+
+        errorMessage = "EMAIL NÃO É VÁLIDO!"
+        error = true;
+    }
+
+    if (error) {
+
+        return res.status(400).send({ message: 'PARÂMETROS INVALIDOS', field: errorMessage });
+    }
+
+    next();
+}
+
 exports.validatorFieldsInput = (req, res, next) => {
 
     let errorMessage = "";
