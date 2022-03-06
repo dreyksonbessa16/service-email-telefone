@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const VerificaController = require('../controllers/VerificaController');
-const Validator = require("../middleware/Validator");
 
-router.get("/email/:token", Validator.validatorFieldsVerifyEmail, VerificaController.verificaEmail);
-router.post("/telefone/:codigo", Validator.validatorFieldsVerifyTelefone, VerificaController.verificaTelefone);
-router.post("/status", Validator.validatorFieldsInput, VerificaController.verificaStatus);
+router.post("/email/:codigo", VerificaController.verificaEmail);
+router.post("/telefone/:codigo", VerificaController.verificaTelefone);
+router.post("/status-email", VerificaController.verificaStatusEmail);
+router.post("/status-telefone", VerificaController.verificaStatusTelefone);
 
 module.exports = router;

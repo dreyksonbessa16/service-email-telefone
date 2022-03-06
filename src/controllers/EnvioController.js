@@ -2,7 +2,6 @@ const User = require("../models/User");
 const Util = require("../services/Util");
 const serviceEmail = require("../services/EmailService");
 const serviceTelefone = require("../services/PhoneService");
-const serviceToken = require("../services/TokenService");
 const logger = require("../../logger");
 
 module.exports = {
@@ -55,7 +54,7 @@ module.exports = {
             }
         });
 
-        return res.status(200).send({ message: "EMAIL ENVIADO COM SUCESSO!" });
+        return res.status(200).send({ message: "EMAIL ENVIADO COM SUCESSO! VERIFIQUE SUA CAIXA DE ENTRADA E SPAN!" });
     },
 
     async envioTelefone(req, res) {
@@ -69,7 +68,7 @@ module.exports = {
             }
         });
 
-        logger.info(`EnvioController: USUÁRIO CRIADO OU LOCALIZADO - { email: ${email} }`);
+        logger.info(`EnvioController: USUÁRIO LOCALIZADO - { email: ${email} }`);
 
         if (user[0].status_email === "P") {
 

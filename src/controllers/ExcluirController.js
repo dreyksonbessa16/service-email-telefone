@@ -19,17 +19,15 @@ module.exports = {
 
             if (user) {
 
-                return res.status(200).send({ message: "USUÁRIO EXCLUÍDO COM SUCESSO!", error: false });
+                return res.status(200).send({ message: "USUÁRIO EXCLUÍDO COM SUCESSO!" });
             } else {
 
                 logger.error(`ExcluirController: ERRO AO EXCLUIR USUÁRIO - { email: ${req.params.email} }`);
-                return res.status(500).send({ message: "ERRO AO EXCLUIR USUÁRIO!", error: true })
+                return res.status(500).send({ message: "ERRO AO EXCLUIR USUÁRIO!" });
             }
         } else {
 
-            return res.status(404).send({ message: "USUÁRIO NÃO EXISTE!", error: true })
+            return res.status(404).send({ message: "USUÁRIO NÃO EXISTE!" });
         }
-
-
     }
 }

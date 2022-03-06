@@ -1,152 +1,146 @@
-const TokenService = require('../services/TokenService');
 const User = require('../models/User');
 const logger = require("../../logger");
 
 module.exports = {
     async verificaEmail(req, res) {
 
-        const { token } = req.params;
-        const tokenDecode = TokenService.decode(token);
+        const { codigo } = req.params;
+        const { email } = req.body;
 
-        const usuario = await User.findAll({
+        const user = await User.findAll({
             where: {
-                email: tokenDecode.email,
+                email
             }
         });
 
-        if (usuario[0]) {
+        if (!user[0]) {
 
-            if (usuario[0].status_email === "A") {
-
-                return res.status(202).send({
-                    message: "ESTE EMAIL JÁ FOI CONFIRMADO!",
-                    error: false
-                });
-            } else {
-
-                if (usuario[0].codigo_email === tokenDecode.codigo_email) {
-
-                    const result = await User.update({
-                        status_email: 'A'
-                    }, {
-                        where: { email: usuario[0].email }
-                    });
-
-                    if (!result) {
-
-                        logger.error(`VerificaController: ERRO AO VERIFICAR EMAIL - { email: ${tokenDecode.email}}`);
-                        return res.status(500).send({
-                            message: "ERRO AO VERIFICAR EMAIL!",
-                            error: true
-                        });
-                    } else {
-
-                        return res.status(200).send({
-                            message: "EMAIL VERIFICADO COM SUCESSO!",
-                            error: false,
-                            email: tokenDecode.email,
-                            telefone: tokenDecode.telefone
-                        });
-                    }
-                } else {
-
-                    logger.error(`VerificaController: CÓDIGO NÃO CORRESPONDE AO CADASTRADO - { email: ${tokenDecode.email}, codigo_email: ${tokenDecode.codigo_email}}`);
-                    return res.status(404).send({
-                        message: "CÓDIGO NÃO CORRESPONDE AO CADASTRADO!",
-                        error: true
-                    });
-                }
-            }
-        } else {
-
-            return res.status(404).send({
-                message: "USUÁRIO NÃO ENCONTRADO",
-                error: true
-            });
+            logger.error(`VerificaController: USUÁRIO NÃO ENCONTRADO - { email: ${email} }`);
+            return res.status(404).send({ message: "USUÁRIO NÃO ENCONTRADO" });
         }
 
+        logger.info(`EnvioController: USUÁRIO LOCALIZADO - { email: ${email} }`);
+
+        if (user[0].codigo_email === codigo) {
+
+            const userUpdate = await User.update({
+                status_email: 'A'
+            }, {
+                where: {
+                    email: email
+                }
+            });
+
+            if (!userUpdate[0]) {
+
+                logger.error(`VerificaController: ERRO AO VERIFICAR EMAIL - { email: ${email} }`);
+                return res.status(500)({ message: "ERRO AO VERIFICAR EMAIL!" });
+            }
+        } else {
+            
+            logger.error(`VerificaController: CÓDIGO NÃO CORRESPONDE AO CÓDIGO CADASTRADO - { email: ${email} }`);
+            return res.status(422).send({ message: "CÓDIGO INVÁLIDO!" });
+        }
+        
+        logger.info(`VerificaController: EMAIL VERIFICADO COM SUCESSO - { email: ${email} }`);
+        return res.status(200).send({ message: "EMAIL VERIFICADO COM SUCESSO!" });
     },
     async verificaTelefone(req, res) {
 
         const { codigo } = req.params;
         const { email } = req.body;
 
-        const usuario = await User.findAll({
+        const user = await User.findAll({
             where: {
-                email: email,
+                email
             }
         });
 
-        if (usuario[0]) {
+        if (!user[0]) {
 
-            if (usuario[0].status_telefone === "A") {
+            logger.error(`VerificaController: USUÁRIO NÃO ENCONTRADO - { email: ${email} }`);
+            return res.status(404).send({ message: "USUÁRIO NÃO ENCONTRADO" });
+        }
 
-                return res.status(202).send({
-                    message: "ESTE EMAIL JÁ FOI CONFIRMADO!",
-                    error: false
-                });
-            } else {
+        logger.info(`EnvioController: USUÁRIO LOCALIZADO - { email: ${email} }`);
 
-                if (usuario[0].codigo_telefone === codigo) {
+        if (user[0].codigo_telefone === codigo) {
 
-                    const result = await User.update({
-                        status_telefone: 'A'
-                    }, {
-                        where: { email: usuario[0].email }
-                    });
-
-                    if (!result) {
-
-                        logger.error(`VerificaController: ERRO AO VERIFICAR TELEFONE - { email: ${email}}`);
-                        return res.status(500).send({
-                            message: "ERRO AO VERIFICAR TELEFONE!",
-                            error: true
-                        });
-                    } else {
-
-                        return res.status(200).send({
-                            message: "TELEFONE VERIFICADO COM SUCESSO!",
-                            error: false
-                        });
-                    }
-                } else {
-
-                    logger.error(`VerificaController: CÓDIGO NÃO CORRESPONDE AO CADASTRADO - { email: ${email}, codigo_email: ${codigo}}`);
-                    return res.status(404).send({
-                        message: "CÓDIGO NÃO CORRESPONDE AO CADASTRADO!",
-                        error: true
-                    });
+            const userUpdate = await User.update({
+                status_telefone: 'A'
+            }, {
+                where: {
+                    email: email
                 }
+            });
+
+            if (!userUpdate[0]) {
+
+                logger.error(`VerificaController: ERRO AO VERIFICAR SMS - { email: ${email} }`);
+                return res.status(500)({ message: "ERRO AO VERIFICAR SMS!" });
             }
         } else {
 
-            return res.status(404).send({
-                message: "USUÁRIO NÃO ENCONTRADO",
-                error: true
-            });
+            logger.error(`VerificaController: CÓDIGO NÃO CORRESPONDE AO CÓDIGO CADASTRADO - { email: ${email} }`);
+            return res.status(422).send({ message: "CÓDIGO INVÁLIDO!" });
         }
+        
+        logger.error(`VerificaController: SMS VERIFICADO COM SUCESSO - { email: ${email} }`);
+        return res.status(200).send({ message: "SMS VERIFICADO COM SUCESSO!" });
     },
-    async verificaStatus(req, res) {
+    async verificaStatusEmail(req, res) {
 
         const { email } = req.body;
 
-        const usuario = await User.findAll({
+        const user = await User.findAll({
             where: {
-                email: email,
-                status_telefone: 'A',
-                status_email: 'A'
+                email
             }
         });
 
-        if (usuario[0]) {
+        if (!user[0]) {
 
-            return res.status(200).send({ message: "USUÁRIO VERIFICADO!", error: false });
-        } else {
-
-            return res.status(400).send({
-                message: "USUÁRIO NÃO VERIFICADO OU NÃO EXISTE!",
-                error: true
-            });
+            logger.error(`VerificaController: USUÁRIO NÃO ENCONTRADO - { email: ${email} }`);
+            return res.status(404).send({ message: "USUÁRIO NÃO ENCONTRADO" });
         }
+
+        logger.info(`EnvioController: USUÁRIO LOCALIZADO - { email: ${email} }`);
+
+        if (user[0].status_email !== "A") {
+            
+            logger.error(`VerficaController: EMAIL NÃO VERIFICADO - { email: ${email} }`);
+            return res.status(422).send({ message: "EMAIL NÃO VERIFICADO! POR FAVOR, VERIFIQUE SUA CAIXA DE ENTRADA OU SPAN!" });
+        }
+        
+        logger.info(`VerficaController: EMAIL JÁ VERIFICADO - { email: ${email} }`);
+        return res.status(200).send({ message: "EMAIL JÁ VERIFICADO!" });
+    },
+
+    async verificaStatusTelefone(req, res) {
+
+        const { email } = req.body;
+
+        const user = await User.findAll({
+            where: {
+                email
+            }
+        });
+
+        if (!user[0]) {
+
+            logger.error(`VerificaController: USUÁRIO NÃO ENCONTRADO - { email: ${email} }`);
+            return res.status(404).send({ message: "USUÁRIO NÃO ENCONTRADO" });
+        }
+
+        logger.info(`EnvioController: USUÁRIO LOCALIZADO - { email: ${email} }`);
+
+        if (user[0].status_telefone !== "A") {
+            
+            logger.error(`VerficaController: TELEFONE NÃO VERIFICADO - { email: ${email} }`);
+            return res.status(422).send({ message: "TELEFONE NÃO VERIFICADO!" });
+        }
+        
+        logger.info(`VerficaController: TELEFONE JÁ VERIFICADO - { email: ${email} }`);
+        return res.status(200).send({ message: "TELEFONE JÁ VERIFICADO!" });
     }
 }
