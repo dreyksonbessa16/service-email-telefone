@@ -4,16 +4,19 @@ const logger = require("../../logger");
 module.exports = {
     async deletarUsuario(req, res) {
 
+        let email = req.params.email;
+        email = email.toUpperCase();
+
         const findUser = await User.findAll({
             where: {
-                email: req.params.email
+                email: email
             }
         });
 
         if (findUser[0]) {
             const user = await User.destroy({
                 where: {
-                    email: req.params.email
+                    email: email
                 }
             });
 
@@ -22,7 +25,7 @@ module.exports = {
                 return res.status(200).send({ message: "USUÁRIO EXCLUÍDO COM SUCESSO!" });
             } else {
 
-                logger.error(`ExcluirController: ERRO AO EXCLUIR USUÁRIO - { email: ${req.params.email} }`);
+                logger.error(`ExcluirController: ERRO AO EXCLUIR USUÁRIO - { email: ${email} }`);
                 return res.status(500).send({ message: "ERRO AO EXCLUIR USUÁRIO!" });
             }
         } else {

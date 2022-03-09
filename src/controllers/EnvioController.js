@@ -9,7 +9,9 @@ module.exports = {
     async envioEmail(req, res) {
 
         const codigo_email = Util.geraCodigoHash(10);
-        const { email, telefone } = req.body;
+        const { telefone } = req.body;
+        let email = req.body.email;
+        email = email.toUpperCase();
 
         const [user, created] = await User.findOrCreate({
             where: { email: email },
@@ -42,7 +44,7 @@ module.exports = {
             if (!userUpdate[0]) {
 
                 logger.error(`EnvioController: ERRO AO ATUALIZAR USUÁRIO - { email: ${email}, telefone: ${telefone} }`);
-                return res.status(500)({ message: "ERRO AO ATUALIZAR USUÁRIO!" });
+                return res.status(500).send({ message: "ERRO AO ATUALIZAR USUÁRIO!" });
             }
         }
 
@@ -59,7 +61,8 @@ module.exports = {
 
     async envioTelefone(req, res) {
 
-        const { email } = req.body;
+        let email = req.body.email;
+        email = email.toUpperCase();
         const codigo_telefone = Util.geraCodigoHash(5);
 
         const user = await User.findAll({

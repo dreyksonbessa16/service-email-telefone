@@ -5,7 +5,8 @@ module.exports = {
     async verificaEmail(req, res) {
 
         const { codigo } = req.params;
-        const { email } = req.body;
+        let email = req.body.email;
+        email = email.toUpperCase();
 
         const user = await User.findAll({
             where: {
@@ -48,7 +49,8 @@ module.exports = {
     async verificaTelefone(req, res) {
 
         const { codigo } = req.params;
-        const { email } = req.body;
+        let email = req.body.email;
+        email = email.toUpperCase();
 
         const user = await User.findAll({
             where: {
@@ -90,7 +92,8 @@ module.exports = {
     },
     async verificaStatusEmail(req, res) {
 
-        const { email } = req.body;
+        let email = req.body.email;
+        email = email.toUpperCase();
 
         const user = await User.findAll({
             where: {
@@ -118,7 +121,8 @@ module.exports = {
 
     async verificaStatusTelefone(req, res) {
 
-        const { email } = req.body;
+        let email = req.body.email;
+        email = email.toUpperCase();
 
         const user = await User.findAll({
             where: {
