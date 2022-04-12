@@ -1,0 +1,21 @@
+{
+    "ERRORS": {
+        "MSG_PARAMETROS_INVALIDOS": { "code": "PR01", "message": "Não foi possível continuar, pois houve um erro nos parâmetros enviados. Contate o suporte."},
+        "MSG_ERRO_ENVIAR_EMAIL": { "code": "PR02", "message": "Não foi possível continuar, pois houve um erro ao enviar o email. Contate o suporte."},
+        "MSG_MODEL": { "code": "PR03", "message": "Não foi possível continuar, pois houve um erro no model da entidade. Contate o suporte."},
+        "MSG_NAO_ENCONTRADO": { "code": "PR04", "message": "Não foi possível continuar, pois houve um problema na busca do usuário. Contate o suporte."},
+        "MSG_ERRO_ENVIAR_SMS": { "code": "PR05", "message": "Não foi possível continuar, pois houve um erro ao enviar o sms. Contate o suporte."},
+        "MSG_ERRO_VERIFICAR_EMAIL": { "code": "PR06", "message": "Não foi possível continuar, pois houve um erro ao verificar email. Contate o suporte."},
+        "MSG_ERRO_VERIFICAR_SMS": { "code": "PR07", "message": "Não foi possível continuar, pois houve um erro ao verificar sms. Contate o suporte."},
+        "MSG_ERRO_EXCLUIR_USER": { "code": "PR08", "message": "Não foi possível continuar, pois houve um erro ao excluir usuário. Contate o suporte."}
+    },
+    "ERROR_DETAILS": {
+        "NULL": "não pode ser null",
+        "VAZIO": "não pode ser vazio",
+        "INVALIDO": "está inválido",
+        "DDD_NAO_EXISTE": "DDD não existe",
+        "NUMERO_SEM_9": "9 não é o prefixo",
+        "UNDEFINED": "não pode ser undefined",
+        "USER_EXISTS": "usuário já existe"
+    }
+}

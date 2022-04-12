@@ -1,14 +1,11 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const cors = require("cors");
-const morgan = require("morgan");
+const cors = require('cors');
+const morgan = require('morgan');
+const index = require('./src/index');
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
-require("./src/database");
-
-const envio = require("./src/routes/EnvioRoute");
-const verifica = require("./src/routes/verificarRoute");
-const excluir = require("./src/routes/ExcluirRoute");
-
+require('./src/database')
 
 app.use(cors());
 app.use((req, res, next) => {
@@ -23,14 +20,11 @@ app.use((req, res, next) => {
     }
     next();
 });
-
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
-app.use("/envio", envio);
-app.use("/verifica", verifica);
-app.use("/excluir", excluir);
+app.use(index);
 
 app.use((req, res, next) => {
     const erro = new Error('Não encontrado');
@@ -47,4 +41,4 @@ app.use((error, req, res, next) => {
     });
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3333);

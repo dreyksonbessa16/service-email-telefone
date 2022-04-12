@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const dbconfib = require("../configs/database");
 
-const User = require("../models/User");
+const User = require("../api/models/User");
 
 const connection = new Sequelize(dbconfib);
 

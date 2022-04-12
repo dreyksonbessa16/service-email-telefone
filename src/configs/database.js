@@ -10,11 +10,11 @@ module.exports = {
         underscored: true
     },
     logging: false,
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    },
+    // dialectOptions: {
+    //     ssl: {
+    //         require: true,
+    //         rejectUnauthorized: false
+    //     }
+    // },
 
 };
