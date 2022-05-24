@@ -1,5 +1,5 @@
 require('dotenv').config();
-const client = require('twilio')(process.env.ACCOUNT_SID_TWILIO_DEV, process.env.AUTH_TOKEN_TWILIO_DEV);
+const client = require('twilio')(process.env.ACCOUNT_SID_TWILIO, process.env.AUTH_TOKEN_TWILIO);
 const STATUS_CODE = require('../../constantes/status_code.json');
 const MESSAGES = require('../../constantes/messages.json');
 const { createMessageError } = require('../../utils/utils');
