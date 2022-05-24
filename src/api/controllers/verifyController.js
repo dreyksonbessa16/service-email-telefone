@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const verifica = require("../middlewares/verifica");
-const verificaService = require("../services/verificaService");
+const middlewares = require("../middlewares/verifyMiddleware");
+const services = require("../services/verifyService");
 
-router.post("/status", verifica.inputVerificaStatus, verificaService.verificaStatus);
-router.post("/email", verifica.inputVerificaEmail, verificaService.verificaEmail);
-router.post("/telefone", verifica.inputVerificaTelefone, verificaService.verificaTelefone);
+router.post("/status", middlewares.verifyStatus, services.verifyStatus);
+router.post("/email", middlewares.verifyEmail, services.verifyEmail);
+router.post("/telefone", middlewares.verifyPhone, services.verificaTelefone);
 
 module.exports = router;

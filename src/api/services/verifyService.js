@@ -9,7 +9,7 @@ const { generateCode } = require('../../helpers/helpers');
 
 
 module.exports = {
-    async verificaStatus(req, res) {
+    async verifyStatus(req, res) {
         var user;
         const { email } = req.body;
 
@@ -26,20 +26,16 @@ module.exports = {
         }
 
         if (user.status_email !== 'A') {
-            const error = new Error();
-            createMessageError(error, STATUS_CODE.NOT_ACCEPTABLE, MESSAGES.ERRORS.MSG_ERRO_VERIFICAR_EMAIL, { message: "Email ainda não verificado." });
-            return res.status(error.response.code).send(error.response);
+            return res.status(STATUS_CODE.NOT_ACCEPTABLE).send({ email: false});
         }
 
         if (user.status_telefone !== 'A') {
-            const error = new Error();
-            createMessageError(error, STATUS_CODE.NOT_ACCEPTABLE, MESSAGES.ERRORS.MSG_ERRO_VERIFICAR_SMS, { message: "SMS ainda não verificado." });
-            return res.status(error.response.code).send(error.response);
+            return res.status(STATUS_CODE.NOT_ACCEPTABLE).send({ email: true, telefone: false});
         }
 
-        return res.status(STATUS_CODE.OK).send({ user });
+        return res.status(STATUS_CODE.OK).send({ email: true, telefone: true });
     },
-    async verificaEmail(req, res) {
+    async verifyEmail(req, res) {
         var user;
         const {
             email,

@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const users = require("../middlewares/user");
-const usersService = require("../services/usersService");
+const middlewares = require("../middlewares/userMiddleware");
+const services = require("../services/usersService");
 
-router.post("/signup", users.inputSignup, usersService.signup);
-router.get("/search", users.inputSearch, usersService.search);
-router.delete("/delete", users.inputDelete, usersService.delete);
+router.post("/signup", middlewares.inputSignup, services.signup);
+
+router.get("/search", middlewares.inputSearch, services.search);
+
+router.delete("/delete", middlewares.inputDelete, services.delete);
 
 module.exports = router;

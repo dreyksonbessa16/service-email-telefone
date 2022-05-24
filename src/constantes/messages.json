@@ -7,7 +7,8 @@
         "MSG_ERRO_ENVIAR_SMS": { "code": "PR05", "message": "Não foi possível continuar, pois houve um erro ao enviar o sms. Contate o suporte."},
         "MSG_ERRO_VERIFICAR_EMAIL": { "code": "PR06", "message": "Não foi possível continuar, pois houve um erro ao verificar email. Contate o suporte."},
         "MSG_ERRO_VERIFICAR_SMS": { "code": "PR07", "message": "Não foi possível continuar, pois houve um erro ao verificar sms. Contate o suporte."},
-        "MSG_ERRO_EXCLUIR_USER": { "code": "PR08", "message": "Não foi possível continuar, pois houve um erro ao excluir usuário. Contate o suporte."}
+        "MSG_ERRO_EXCLUIR_USER": { "code": "PR08", "message": "Não foi possível continuar, pois houve um erro ao excluir usuário. Contate o suporte."},
+        "MSG_ERRO_VALIDACAO_ENTRADA": { "code": "PR09", "message": "Não foi possível continuar, pois houve um erro ao tentar validar os dados de entrada. Contate o suporte."}
     },
     "ERROR_DETAILS": {
         "NULL": "não pode ser null",

@@ -9,6 +9,6 @@ module.exports = {
         error.response = messageError;
     },
     adjustPhone(telefone) {
-        return '+55' + telefone.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '')
+        return '+55' + telefone.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '')
     }
 }

@@ -9,7 +9,7 @@ const { generateCode } = require('../../helpers/helpers');
 
 
 module.exports = {
-    async emailEnvio(req, res) {
+    async sendEmail(req, res) {
         var user;
         const { email } = req.body;
 
@@ -23,6 +23,10 @@ module.exports = {
             const error = new Error();
             createMessageError(error, STATUS_CODE.NOT_FOUND, MESSAGES.ERRORS.MSG_NAO_ENCONTRADO, { message: "Usuário não existe" });
             return res.status(error.response.code).send(error.response);
+        }
+
+        if (user.status_email === 'A') {
+            return res.status(STATUS_CODE.OK).send({ message: 'EMAIL JÁ VERIFICADO', user});
         }
 
         var codigo_email;
@@ -46,7 +50,7 @@ module.exports = {
 
         return res.status(STATUS_CODE.OK).send({ user });
     },
-    async telefoneEnvio(req, res) {
+    async sendPhone(req, res) {
         var user;
         try {
             user = await UsersRepository.findOne(req.body.email.toUpperCase());

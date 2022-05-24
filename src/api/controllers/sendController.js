@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const envio = require("../middlewares/envio");
-const envioService = require("../services/envioService");
+const middlewares = require("../middlewares/sendMiddleware");
+const services = require("../services/sendService");
 
-router.post("/email", envio.envioEmail, envioService.emailEnvio);
-router.post("/telefone", envio.envioEmail, envioService.telefoneEnvio);
+router.post("/email", middlewares.sendEmail, services.sendEmail);
+router.post("/telefone", middlewares.sendEmail, services.sendPhone);
 
 module.exports = router;
