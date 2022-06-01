@@ -59,7 +59,7 @@ module.exports = {
                           <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
                             Este email, é um email automático configurado para enviar o código do verificação do Associado. Abaixo terá um link para confirmar seu email, basta clicar no link, e você será redirecionado para uma página onde será confirmado este email
                           </p>
-                          <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="${process.env.API}/${codigo}" style="color:#ee4c50;text-decoration:underline;">CLIQUE AQUI PARA CONFIRMAR SEU EMAIL!</a></p>
+                          <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="${process.env.API}/verifica/${codigo}" style="color:#ee4c50;text-decoration:underline;">CLIQUE AQUI PARA CONFIRMAR SEU EMAIL!</a></p>
                         </td>
                       </tr>
                       <!-- <tr>
